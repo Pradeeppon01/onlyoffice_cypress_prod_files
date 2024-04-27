@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+       <style>
+            h2{
+                text-align: center;
+            }
+            button{
+                background-color:blue;
+                color:white;
+                font-size: 20px;
+                display:block;
+                margin:0 auto;
+                width:30%;
+            }
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color:white; /* Adjust the opacity here */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+                opacity:0.8;
+                text-align: center;
+                margin:auto auto;
+                }
+                @keyframes spinning{
+                   0%{
+                     transform:rotate(0deg)
+                  }
+                  100% {
+                    transform:rotate(359deg)
+                  }
+                }
+        </style>
+    </head>
+    <body style="width:100%;">
+        <div class="overlay" id="loading_div" style="display:none;">
+            <div style="margin-bottom: 100px;overflow: none;">
+                <h2>The Testing is undergoing...</h2>
+            <div><i class="fa-solid fa-spinner" style="scale:3;opacity:1;display: block;animation:spinning 2s infinite"></i></div>
+            <div>
+                <h3 class="loader" style="opacity:1;margin-top:30px">Loading...</h3>
+            </div>
+            </div>
+        </div>
+        <div style="height:100vh;display: flex;">
+            <div style="width:30%;margin:0 10px">
+               <div style="text-align: center;">
+                <h1 style="background-color: rgb(191, 140, 238);padding:10px 1px;">Cypress Automation Testing:</h1>
+                <p style="margin:2px 20px;font-size: 20px;">Cypressing Automation Testing is a service that empowers users to perform comprehensive end-to-end testing on their web applications. With Cypress, users can easily create and run automated tests to validate the functionality and performance of their applications.
+                    We take testing to the next level by providing detailed reporting through Allure. This powerful reporting framework generates comprehensive reports that offer insights into test results, including test cases, status, and any issues encountered during testing.
+                    By leveraging Cypress and Allure, users can gain valuable information about the quality of their applications. The detailed reports help identify and address bugs, optimize performance, and enhance the overall user experience.
+                    With Cypressing Automation Testing, we simplify the testing process and provide actionable insights through detailed reporting using Allure.</p>
+               </div>
+               <div>
+                <h2>End-End testing</h2>
+                <button style="align-items: center;" onclick="e2e_testing()">Test</button>
+               </div>
+               <div>
+                <h2>Backend testing</h2>
+                <button style="align-items: center;" onclick="backend_testing()">Test</button>
+               </div>
+               <div id="report_container">
+               </div>
+            </div>
+            <div style="width:70%;height:100vh;">
+                <iframe src="https://sakthipress.cypress.usln.in" width="100%" height="100%" style="border: none;"></iframe>
+            </div>
+        </div>
+    </body>
+    <script>
+         function generateRandomNumber() {
+  let firstDigit = Math.floor(Math.random() * 4) + 1; 
+  let middleDigits = Math.floor(Math.random() * 90) + 10;
+  let randomNumber = parseInt(`${firstDigit}${middleDigits}${firstDigit}`, 10);
+  console.log(randomNumber)
+  return randomNumber;
+}
+
+function storeSessionId() {
+  let session_id = sessionStorage.getItem("session_id");
+
+  if (session_id === null) {
+    // Generate a new session_id and store it in sessionStorage
+    let randomNum = generateRandomNumber();
+    sessionStorage.setItem("session_id", randomNum);
+
+    console.log("Generated Random Number:", randomNum);
+  } else {
+    console.log("Existing session_id found:", session_id);
+  }
+}  
+
+          storeSessionId();
+          function e2e_testing(){
+            document.getElementById("loading_div").style.display="block"
+            option=sessionStorage.getItem("option")
+            session_id = sessionStorage.getItem("session_id");
+            console.log(option)
+            payload={
+                option:option,
+                session_id:session_id,
+            }
+            $.ajax({
+                url:"https://api.cypress.usln.in/testingE2e",
+                method:"POST",
+                contentType:'application/json',
+                data:JSON.stringify(payload),
+                success:function(response){
+                    console.log("success")
+                   console.log(response)
+                   setTimeout(function() {
+                        document.getElementById("loading_div").style.display = "none";
+                        document.getElementById("report_container").innerHTML += `<h2>Reports</h2>
+                            <button style="align-items: center;" id="report_button"><a href="http://34.100.132.108:8888"style="color:white" >E2e Report</a></button>`;
+                    }, 3 * 60 * 1000);
+                },
+                error:function(error){
+                     console.log("error")
+                }  
+            })
+          }
+          function backend_testing(){
+            document.getElementById("loading_div").style.display="block"
+            option=sessionStorage.getItem("option")
+            session_id = sessionStorage.getItem("session_id");
+            backend_session_id=parseInt(session_id)+1;
+            console.log(option)
+            payload={
+                option:option,
+                session_id:backend_session_id,
+            }
+            $.ajax({
+                url:"https://api.cypress.usln.in/testingBackend",
+                method:"POST",
+                contentType:'application/json',
+                data:JSON.stringify(payload),
+                success:function(response){
+                    console.log("success")
+                   console.log(response)
+                   setTimeout(function() {
+                        document.getElementById("loading_div").style.display = "none";
+                        document.getElementById("report_container").innerHTML += `<h2>Reports</h2>
+                            <button style="align-items: center;" id="report_button"><a href="http://34.100.132.108:${backend_session_id}"style="color:white" >Backend Report</a></button>`;
+                    }, 3 * 60 * 1000);
+                },
+                error:function(error){
+                     console.log("error")
+                }  
+            })
+          }
+
+    </script>
+</html>

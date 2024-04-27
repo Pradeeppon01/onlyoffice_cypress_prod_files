@@ -1,0 +1,1 @@
+{"uuid":"f857dc99-b7c3-4de1-a172-f806a79aea7c","historyId":"4fd1dd9481beae176060a80735b171c6","status":"skipped","statusDetails":{"message":"Test ignored"},"stage":"finished","steps":[],"attachments":[],"parameters":[],"labels":[{"name":"suite","value":"API Call"}],"links":[],"start":1689761644616,"name":"Retrieve All Tasks","fullName":"Retrieve All Tasks","stop":1689761644616}

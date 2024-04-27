@@ -1,0 +1,1 @@
+{"uuid":"62a2163f-f16d-4621-bd7b-8f7343b58474","historyId":"305944d8960abfb77433eb1ae66d2893","status":"skipped","statusDetails":{"message":"Test ignored"},"stage":"finished","steps":[],"attachments":[],"parameters":[],"labels":[{"name":"suite","value":"API Call"}],"links":[],"start":1689787425350,"name":"Retrieve User jobs","fullName":"Retrieve User jobs","stop":1689787425352}
